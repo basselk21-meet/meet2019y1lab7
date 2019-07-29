@@ -11,7 +11,7 @@ turtle.setup(SIZE_X, SIZE_Y) #Curious? It's the turtle window
 turtle.penup()
 
 SQUARE_SIZE = 20
-START_LENGTH = 6
+START_LENGTH = 7
 TIME_STEP = 100
 
 #Initialize lists
@@ -55,4 +55,117 @@ for number  in range(START_LENGTH) :
     #function to do this)
     new_stamp()
 
-    turtle.mainloop()
+
+def remove_tail():
+    old_stamp = stamp_list.pop(0) # last piece of tail
+    snake.clearstamp(old_stamp) # erase last piece of tail
+    pos_list.pop(0) # remove last piece of tail's position
+
+
+snake.direction = "Up"
+UP_EDGE = 250
+DOWN_EDGE = -250
+RIGHT_EDGE = 400
+LEFT_EDGE = -400
+
+
+def up():
+    snake.direction="Up" #Change direction to up
+    move_snake() #Update the snake drawing 
+    print("You pressed the up key!")
+
+def down():
+    snake.direction="Down"
+    move_snake()
+    print("You pressed the down key!")
+
+def right():
+    snake.direction="Right"
+    move_snake()
+    print("You pressed the right key!")
+
+def left():
+    snake.direction="Left"
+    move_snake()
+    print("You pressed the left key!")
+
+#2. Make functions down(), left(), and right() that change snake.direction
+####WRITE YOUR CODE HERE!!
+
+turtle.onkeypress(up, "Up") # Create listener for up key
+turtle.onkeypress(down, "Down")
+turtle.onkeypress(right, "Right")
+turtle.onkeypress(left, "Left")
+
+#3. Do the same for the other arrow keys
+####WRITE YOUR CODE HERE!!
+
+turtle.listen()
+
+def move_snake():
+    my_pos = snake.pos()
+    x_pos = my_pos[0]
+    y_pos = my_pos[1]
+    
+    #If snake.direction is up, then we want the snake to change
+    #it’s y position by SQUARE_SIZE
+    if snake.direction == "Up":
+        snake.goto(x_pos, y_pos + SQUARE_SIZE)
+        print("You moved up!")
+    elif snake.direction=="Down":
+        snake.goto(x_pos, y_pos - SQUARE_SIZE)
+        print("Ypu moved down!")
+
+    if snake.direction== "Right":
+        snake.goto(x_pos + SQUARE_SIZE, y_pos)
+        print("You moved right!")
+    elif snake.direction== "Left":
+        snake.goto(x_pos - SQUARE_SIZE, y_pos)
+        print ("You moved left!")
+        
+
+    #4. Write the conditions for RIGHT and LEFT on your own
+    ##### YOUR CODE HERE
+
+    #Make the snake stamp a new square on the screen
+    #Hint - use a single function to do this
+    new_stamp()
+
+    ######## SPECIAL PLACE - Remember it for Part 5
+
+    #remove the last piece of the snake (Hint Functions are FUN!)
+    remove_tail()
+
+    #Add new lines to the end of the function
+    #Grab position of snake
+    new_pos = snake.pos()
+    new_x_pos = new_pos[0]
+    new_y_pos = new_pos[1]
+
+    # The next three lines check if the snake is hitting the 
+    # right edge.
+    if new_x_pos >= RIGHT_EDGE:
+         print("You hit the right edge! Game over!")
+         quit()
+
+    if new_x_pos <= LEFT_EDGE:
+        print("You hit the left edge! Game over!")
+        quit()
+
+    if new_y_pos >= UP_EDGE:
+        print("You hit the up edge! Game over!")
+        quit()
+
+    if new_y_pos<= DOWN_EDGE:
+        print("You hit the down edge! Game over!")
+        quit()
+
+    # You should write code to check for the left, top, and bottom edges.
+    #####WRITE YOUR CODE HERE
+
+
+turtle.mainloop()
+
+
+
+
