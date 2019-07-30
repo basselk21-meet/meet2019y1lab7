@@ -70,23 +70,19 @@ LEFT_EDGE = -400
 
 
 def up():
-    snake.direction="Up" #Change direction to up
-    move_snake() #Update the snake drawing 
+    snake.direction="Up" #Change direction to up 
     print("You pressed the up key!")
 
 def down():
     snake.direction="Down"
-    move_snake()
     print("You pressed the down key!")
 
 def right():
     snake.direction="Right"
-    move_snake()
     print("You pressed the right key!")
 
 def left():
     snake.direction="Left"
-    move_snake()
     print("You pressed the left key!")
 
 #2. Make functions down(), left(), and right() that change snake.direction
@@ -102,6 +98,35 @@ turtle.onkeypress(left, "Left")
 
 turtle.listen()
 
+
+turtle.register_shape("food.gif")#Add trash picture                      # Make sure you have downloaded this shape 
+                      # from the Google Drive folder and saved it
+                      # in the same folder as this Python script
+
+food = turtle.clone()
+food.shapesize(0.1,0.1,1)
+food.shape("food.gif")
+
+#Locations of food
+food_pos = [(100,100), (-100,100), (-100,-100), (100,-100)]
+food_stamps = []
+
+# Write code that:
+#1. moves the food turtle to each food position
+#2. stamps the food turtle at that location
+#3. saves the stamp by appending it to the food_stamps list using
+# food_stamps.append(    )
+#4. Don't forget to hide the food turtle!
+for this_food_pos in food_pos :
+    food.goto(this_food_pos)
+    food_stamp=food.stamp()
+    food_stamps.append(food_stamp)
+
+
+
+
+
+
 def move_snake():
     my_pos = snake.pos()
     x_pos = my_pos[0]
@@ -111,17 +136,19 @@ def move_snake():
     #it’s y position by SQUARE_SIZE
     if snake.direction == "Up":
         snake.goto(x_pos, y_pos + SQUARE_SIZE)
-        print("You moved up!")
+
     elif snake.direction=="Down":
         snake.goto(x_pos, y_pos - SQUARE_SIZE)
-        print("Ypu moved down!")
 
     if snake.direction== "Right":
         snake.goto(x_pos + SQUARE_SIZE, y_pos)
-        print("You moved right!")
+        
     elif snake.direction== "Left":
         snake.goto(x_pos - SQUARE_SIZE, y_pos)
-        print ("You moved left!")
+        
+
+    turtle.ontimer(move_snake,TIME_STEP)
+
         
 
     #4. Write the conditions for RIGHT and LEFT on your own
@@ -132,6 +159,24 @@ def move_snake():
     new_stamp()
 
     ######## SPECIAL PLACE - Remember it for Part 5
+
+    #If snake is on top of food item
+    if snake.pos() in food_pos:
+        food_index=food_pos.index(snake.pos()) #What does this do?
+        food.clearstamp(food_stamps[food_index]) #Remove eaten food stamp
+        food_pos.pop(food_index) #Remove eaten food position
+        food_stamps.pop(food_index) #Remove eaten food stamp
+        print("You have eaten the food!")
+    
+    #HINT: This if statement may be useful for Part 8
+
+    ...
+    #Don't change the rest of the code in move_snake() function:
+    #If you have included the timer so the snake moves 
+    #automatically, the function should finish as before with a 
+    #call to ontimer()
+    turtle.ontimer(move_snake,TIME_STEP) #<--Last line of function
+
 
     #remove the last piece of the snake (Hint Functions are FUN!)
     remove_tail()
@@ -163,6 +208,7 @@ def move_snake():
     # You should write code to check for the left, top, and bottom edges.
     #####WRITE YOUR CODE HERE
 
+move_snake()
 
 turtle.mainloop()
 
